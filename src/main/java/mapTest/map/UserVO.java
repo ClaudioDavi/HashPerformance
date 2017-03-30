@@ -34,4 +34,19 @@ public class UserVO {
 	public String getUserName() {
 		return userName;
 	}
+	
+	@Override
+	public String toString(){
+		String user = 
+				"\t"
+				+ "Code: " + this.code 
+				+"\n"
+				+ "\t"
+				+ "Username: " + this.userName 
+				+ "\n"
+				+ "\t"
+				+ "Leader name: " + this.leader; 
+		
+		return user;
+	}
 }

@@ -27,6 +27,7 @@ public class App {
 		for (UserVO u : uc.users) {
 			map.put(u.getUserName(), u);
 		}
+		System.out.println("Sample object: \n" + uc.users.get(5).toString());
 		System.out.println("HashMap final Size: " + map.size());
 		return map;
 	}
