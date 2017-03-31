@@ -15,7 +15,7 @@ public class App {
 		//Screen log
 		System.out.println("Leaders inserted: " + leaders);
 		System.out.println("Users inserted: " + users);
-		System.out.println( "Search Time: " + play(populate(leaders, users)) + " ms");
+		play(populate(leaders, users));
 
 	}
 
@@ -32,18 +32,37 @@ public class App {
 		return map;
 	}
 
-	public static long play(HashMap<String, UserVO> hashmap) {
+	public static void play(HashMap<String, UserVO> hashmap) {
 		long startTime = System.currentTimeMillis();
 		
-		HashSet<String> leaders = new HashSet<>();
+		HashSet<UserVO> leaders = new HashSet<>();
 		//for every entry on the map
 		//looks for the assigned leader object and takes the leaders username from his own object.
-		for (Entry<String, UserVO> entry : hashmap.entrySet()) {
-			leaders.add(hashmap.get(entry.getValue().getLeader()).getUserName());
-		}
+		StringBuilder SQL = new StringBuilder();
 		
-		System.out.println("Unique Leaders found: " + leaders.size());
-		return System.currentTimeMillis() - startTime;
+		for (Entry<String, UserVO> entry : hashmap.entrySet()) {
+			UserVO leader = hashmap.get(entry.getValue().getLeader());
+			leaders.add(leader);
+			
+		}
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		
+		long sqlTime = System.currentTimeMillis();
+		
+		//SQL generation
+		for(UserVO leader : leaders) {
+			SQL.append("INSERT INTO USERVO (CODE, USERNAME, LEADER) VALUES (");
+			SQL.append(leader.getCode()+ ", ");
+			SQL.append(leader.getUserName() + ", ");
+			SQL.append(leader.getLeader() + ");\n ");
+		}
+		String sql = SQL.toString();
+		long sqlElapsedTime = System.currentTimeMillis() - sqlTime;
+		
+		System.out.println("Unique Leaders (w/ employees assigned to them) found: " + leaders.size());
+		System.out.println("Time to find all leaders: " + elapsedTime + " ms");
+		System.out.println("Time to generate SQL: " + sqlElapsedTime + " ms");
+		
 	}
 	
 	
